@@ -1,41 +1,39 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom'
-
-import HomePage from './pages/homepage/homepage.component'
-import ShopPage from './pages/shop/shop.component'
-import Header from './components/header/header.component'
-import Auth from './pages/auth/auth.component'
-import {auth, createUserProfileDocument} from './firebase/firebase.utils'
-import {connect} from 'react-redux'
-import {setCurrentUser} from './redux/user/user.actions'
-
+import {Switch, Route, Redirect} from 'react-router-dom';
+import {connect} from 'react-redux';
 import './App.css';
 
- 
+import HomePage from './pages/homepage/homepage.component';
+import ShopPage from './pages/shop/shop.component';
+import AuthPage from './pages//auth/auth.component';
+import Header from './components/header/header.component';
+import {auth, createUserProfileDocument} from './firebase/firebase.utils';
+import {setCurrentUser} from './redux/user/user.actions';
+
+
 class App extends React.Component {
 
-  unsubscribeFromAuth = null
+  unsubscribeFromAuth = null;
 
   componentDidMount() {
-    const {setCurrentUser} = this.props
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+    const {setCurrentUser} = this.props;
+    this.unsubscribeFromAuth =  auth.onAuthStateChanged( async userAuth => {
       if(userAuth) {
-        const userRef = await createUserProfileDocument(userAuth)
-
+        const userRef = await createUserProfileDocument(userAuth);
         userRef.onSnapshot(snapShot => {
-          setCurrentUser({
-            id: snapShot.id,
-            ...snapShot.data()
-          })
-        })
+          setCurrentUser ({
+              id: snapShot.id,
+              ...snapShot.data(),
+            })
+        });
+      } else {
+        setCurrentUser(userAuth);
       }
-      setCurrentUser(userAuth)
-    })
+    });
   }
 
-  
   componentWillUnmount() {
-    this.unsubscribeFromAuth()
+    this.unsubscribeFromAuth();
   }
 
   render() {
@@ -43,17 +41,20 @@ class App extends React.Component {
       <div>
         <Header />
         <Switch>
-			    <Route exact path='/' component={HomePage} />
-        	<Route path='/shop' component={ShopPage} />
-          <Route exact path='/auth'  render={() => this.props.currentUser ? (<Redirect to='/'/>) : (<Auth/>)} />
+          <Route exact path='/' component={HomePage} />
+          <Route path='/shop' component={ShopPage} />
+          <Route
+            exact path='/auth'
+            render={() => this.props.currentUser ? (<Redirect to='/' />):(<AuthPage />)} 
+          />
         </Switch>
       </div>
     );
-  }
+  }  
 }
-
+ 
 const mapStateToProps = ({user}) => ({
-  currentUser: user.currentUser
+  currentUser: user.currentUser,
 })
 
 const mapDispatchToProps = dispatch => ({

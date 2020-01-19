@@ -1,15 +1,13 @@
-import React from 'react'
-import SignIn from '../../components/sign-in/sign-in.component'
-import SignUp from '../../components/sign-up/sign-up.component'
+import React from 'react';
+import './auth.styles.scss';
 
-
-import './auth.styles.scss'
-
-const Auth = () => (
+import SignIn from '../../components/sign-in/sign-in.component';
+import SignUp from '../../components/sign-up/sign-up.component';
+const AuthPage = () => (
     <div className="auth">
-        <SignIn />
-        <SignUp />
+       <SignIn />
+       <SignUp />
     </div>
-)
+);
 
-export default Auth
+export default AuthPage;
