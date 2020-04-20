@@ -9,7 +9,6 @@ import {CollectionPageContainer, CollectionTitle, CollectionItemsContainer} from
 
 
 const CollectionPage = ({collection}) => {
-    console.log(collection)
     const {title, items} = collection;
     return (
     <CollectionPageContainer>
