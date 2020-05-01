@@ -67,7 +67,6 @@ export const AddItemContainer = styled(CustomButton)`
   opacity: 0.7;
   position: absolute;
   top: 255px;
-  display: none;
 
   @media screen and (max-width: 800px) {
     display: block;
